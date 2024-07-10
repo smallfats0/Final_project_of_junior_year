@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <aside th:fragment="leftsidebar" id="leftsidebar" class="sidebar">
+        <!-- User Info -->
+        <div class="user-info" sec:authorize="isAuthenticated()">
+            <div class="image">
+                <img th:src="${session.loginUser.getAvatar()}" width="48" height="48" alt="User" />
+            </div>
+            <div class="info-container">
+                <div class="name" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="${session.userInfo.getNickname()}"></div>
+                <div class="email" th:text="${session.userInfo.getEmail()}"></div>
+                <div class="btn-group user-helper-dropdown">
+                    <i class="material-icons" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">keyboard_arrow_down</i>
+                    <ul class="dropdown-menu pull-right">
+                        <li><a href="javascript:void(0);"><i class="material-icons">person</i>个人详情</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a th:href="@{/logout}"><i class="material-icons">input</i>退出</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!-- #User Info -->
+        <!-- Menu -->
+        <div class="menu">
+            <ul class="list">
+                <li class="header">系统功能</li>
+                <li class="active">
+                    <a th:href="@{/}">
+                        <i class="material-icons">home</i>
+                        <span>首页</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">view_list</i>
+                        <span>文章</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li>
+                            <a th:href="@{/admin/articles}">所有文章</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">view_list</i>
+                        <span>评论</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li>
+                            <a href="pages/tables/jquery-datatable.html">所有评论</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javascript:void(0);" class="menu-toggle">
+                        <i class="material-icons">perm_media</i>
+                        <span>图库</span>
+                    </a>
+                    <ul class="ml-menu">
+                        <li>
+                            <a href="pages/medias/image-gallery.html">所有图片</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <!-- #Menu -->
+        <!-- Footer -->
+        <div class="legal">
+            <div class="copyright">
+                &copy; 2016 - 2017 <a href="javascript:void(0);">AdminBSB - Material Design</a>.
+            </div>
+            <div class="version">
+                <b>Version: </b> 1.0.5
+            </div>
+        </div>
+        <!-- #Footer -->
+    </aside>
+</html>

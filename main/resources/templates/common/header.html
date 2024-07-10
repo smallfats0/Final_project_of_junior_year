@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!-- 论坛导航栏 -->
+<header th:fragment="header" class="p-0" style="height: 80px;background-color: rgb(156, 13, 43)">
+    <div class="container"
+         style="
+            width: 1460px
+        "
+    >
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a th:href="@{/}" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="/images/logo.png" class="bi me-2" alt="logo" width="350" height="62" role="img"
+                     aria-label="XMUT-Forum">
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                <li th:class="${activeUrl=='index.html'?'nav-item active':'nav-item'}">
+                    <a class="nav-link text-white" th:href="@{/index}">&emsp;首页 </a>
+                </li>
+                <li th:class="${activeUrl=='discover'?'nav-item active':'nav-item'}">
+                    <a class="nav-link text-white" th:href="@{/discover/all}">&emsp;发现 </a>
+                </li>
+                <li th:class="${activeUrl=='discover'?'nav-item active':'nav-item'}">
+                    <a class="nav-link text-white" th:href="@{/resources}">&emsp;资源 </a>
+                </li>
+                <li th:class="${activeUrl=='discover'?'nav-item active':'nav-item'}">
+                    <a class="nav-link text-white" th:href="@{/videos}">&emsp;视频 </a>
+                </li>
+                <li th:class="${activeUrl=='discover'?'nav-item active':'nav-item'}">
+                    <a class="nav-link text-white" th:href="@{/docs}">&emsp;文档 </a>
+                </li>
+                <bg sec:authorize="!isAuthenticated()">
+                    <li th:class="${activeUrl=='follow'?'nav-item active':'nav-item'}">
+                        <a class="nav-link text-white" th:href="@{/tofollow}">&emsp;关注 </a>
+                    </li>
+                </bg>
+                <bg sec:authorize="isAuthenticated()">
+                    <li th:class="${activeUrl=='follow'?'nav-item active':'nav-item'}">
+                        <a class="nav-link text-white"
+                           th:href="@{'/tofollow/'+${session.loginUser.getUid()}}">&emsp;关注 </a>
+                    </li>
+                </bg>
+            </ul>
+
+            <form class="mb-lg-0 me-lg-0" action="/search/1/20">
+                <input type="text" name="title" placeholder="" autocomplete="off" class="layui-input form-control"
+                       id="layui-inputsousuoU" th:value="${key}" th:placeholder="搜索帖子">
+            </form>
+
+            <form class="mb-lg-0 me-lg-0" action="/searchU/1/20">
+                <input type="text" name="userNameS" placeholder="" autocomplete="off" class="layui-input form-control"
+                       id="layui-inputsousuo" th:value="${uKey}" th:placeholder="搜索用户">
+            </form>
+
+            <div class="text-end" sec:authorize="!isAuthenticated()">
+                <a class="btn btn-outline-light me-2" th:href="@{/login}" role="button">登录</a>
+                <a class="btn btn-outline-light" th:href="@{/register}" role="button">注册</a>
+            </div>
+
+            <div sec:authorize="isAuthenticated()">
+                <div class="dropdown text-end">
+                    <a th:href="@{'/user/'+${session.loginUser.getUid()}}"
+                       class="d-block link-dark text-decoration-none dropdown-toggle" data-bs-toggle="dropdown"
+                       aria-expanded="false">
+                        <img th:src="${session.loginUser.getAvatar()}" alt="IceCliffs" width="32" height="32"
+                             class="rounded-circle">
+                        <span th:text="${session.userInfo.getNickname()}" th:class="text-white"></span>
+                    </a>
+                    <ul class="dropdown-menu text-small" style="line-height: 25px;">
+                        <bg th:if="${session.msgCount>0}">
+                            <span class="layui-badge" th:text="${session.msgCount}"></span>
+                        </bg>
+                        <li>
+                            <a class="dropdown-item" th:href="@{'/user/'+${session.loginUser.getUid()}}">个人空间</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{'/userinfo/setting/'+${session.loginUser.getUid()}}">编辑资料</a>
+                        </li>
+                        <li>
+                            <div sec:authorize="isAuthenticated()">
+                                    <a class="dropdown-item" style="" th:href="@{/blog/write}"
+                                       role="button">发布帖子</a>
+                                <!-- 判断getRoleId，如果是1则显示管理员后台按钮 -->
+                                <bg th:if="${session.loginUser.getRoleId() == 1}">
+                                    <a class="dropdown-item" style=" color: #0a001f" th:href="@{/admin}"
+                                       role="button">管理员后台</a>
+                                </bg>
+                            </div>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/chat}">我的消息</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" th:href="@{/logout}">退出</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</header>
+</html>

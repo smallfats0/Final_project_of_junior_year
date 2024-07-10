@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>登录</title>
+    <link rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2080705_nt9nesp62ub.css">
+
+</head>
+<body>
+<div style="
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        overflow: auto;
+        top: 0;
+        margin: 0 auto;
+        background: #fff url('../images/reglogin.jpg') no-repeat;
+        background-color: rgb(255, 255, 255);
+        background-position-x: 0%;
+        background-position-y: 0%;
+        background-repeat: no-repeat;
+        background-attachment: scroll;
+        background-image: url('../images/reglogin.jpg');
+        background-size: auto;
+        background-origin: padding-box;
+        background-clip: border-box;
+        background-size: cover;
+    ">
+    <div class="modal d-block py-4" style="margin-top: 100px">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content rounded-4 shadow">
+                <div class="modal-header p-5 pb-4 border-bottom-0">
+                    <h1 class="fw-bold mb-0 fs-2">登陆账号</h1>
+                </div>
+                <div class="modal-body p-5 pt-0" id="formDiv">
+                    <form th:action="@{/login}" method="post" class="layui-form">
+                        <div class="form-floating mb-3">
+                            <input class="form-control layui-input rounded-3" id="userName" name="username" type="text" required placeholder="账号" maxlength="64" autocomplete="off">
+                            <label for="floatingInput">用户名</label>
+                            <div>
+                                <p id="userNameErr" class="errMsg"></p>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input class="form-control rounded-3 layui-input" type="password" name="password" placeholder="密码" id="pwd" maxlength="20">
+                            <label for="floatingInput">密码</label>
+                            <div>
+                                <p style="color: red;margin: 5px" id="passwordErr" class="errMsg" th:if="${param.error}" th:text="${session.SPRING_SECURITY_LAST_EXCEPTION.message}"></p>
+                            </div>
+                        </div>
+                        <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">登录</button>
+                        <hr class="my-4">
+                        <a class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="submit" th:href="@{/find}">
+                            <svg class="bi me-1" width="16" height="16"><use xlink:href="#facebook"></use></svg>
+                            忘记密码
+                        </a>
+                        <a class="w-100 py-2 mb-2 btn btn-outline-primary rounded-3" type="submit" th:href="@{/register}">
+                            <svg class="bi me-1" width="16" height="16"><use xlink:href="#facebook"></use></svg>
+                            没有账号？点击这里注册
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="~{common/footer::footer}"></div>
+</div>
+<script th:src="@{/layui/layui.all.js}"></script>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+    });
+</script>
+</body>
+</html>

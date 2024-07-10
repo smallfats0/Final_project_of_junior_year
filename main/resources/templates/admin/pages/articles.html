@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>所有文章</title>
+    <link rel="icon" href="../../favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" th:href="@{/plugins/bootstrap/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/plugins/node-waves/waves.css}">
+    <link rel="stylesheet" th:href="@{/plugins/animate-css/animate.css}">
+    <link rel="stylesheet" th:href="@{/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/themes/all-themes.css}">
+</head>
+
+<body class="theme-red">
+<!-- Page Loader -->
+<div class="page-loader-wrapper">
+    <div class="loader">
+        <div class="preloader">
+            <div class="spinner-layer pl-red">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <p>Please wait...</p>
+    </div>
+</div>
+<!-- #END# Page Loader -->
+<!-- Overlay For Sidebars -->
+<div class="overlay"></div>
+<!-- #END# Overlay For Sidebars -->
+<!-- Search Bar -->
+<div class="search-bar">
+    <div class="search-icon">
+        <i class="material-icons">search</i>
+    </div>
+    <input type="text" placeholder="START TYPING...">
+    <div class="close-search">
+        <i class="material-icons">close</i>
+    </div>
+</div>
+<!-- #END# Search Bar -->
+<!-- Top Bar -->
+<nav th:replace="~{common/admin-header::admin-header(activeUrl='index.html')}"></nav>
+<!-- #Top Bar -->
+<section>
+    <!-- Left Sidebar -->
+    <div th:replace="~{common/sidebar::leftsidebar(activeUrl='index.html')}"></div>
+    <!-- #END# Left Sidebar -->
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="block-header">
+            <h2>
+                所有文章
+            </h2>
+        </div>
+        <!-- Basic Examples -->
+        <div class="row clearfix">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="card">
+                    <div class="header">
+                        <ul class="header-dropdown m-r--5">
+                            <li class="dropdown">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                    <i class="material-icons">more_vert</i>
+                                </a>
+                                <ul class="dropdown-menu pull-right">
+                                    <li><a href="javascript:void(0);">Action</a></li>
+                                    <li><a href="javascript:void(0);">Another action</a></li>
+                                    <li><a href="javascript:void(0);">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="body">
+                        <div class="table-responsive" th:if="${blogs.getDatas().size()>0}">
+                            <table
+                                    th:if="${blogs.getDatas().size()>0}"
+                                    class="table table-bordered table-striped dataTable">
+                                <thead>
+                                <tr>
+                                    <th>标题</th>
+                                    <th>作者</th>
+                                    <th>分类</th>
+                                    <th>备注</th>
+                                    <th>评论数量</th>
+                                    <th>流量数量</th>
+                                </tr>
+                                </thead>
+                                <tbody th:each="blog:${blogs.getDatas()}">
+                                    <tr>
+                                        <td th:text="${blog.getTitle()}"></td>
+                                        <td th:text="${blog.getAuthorName()}"></td>
+                                        <td th:if="${blog.getCategoryName()} == '技术'" th:text="${blog.getCategoryName()}"></td>
+                                        <td th:if="${blog.getCategoryName()} == '提问'" th:text="${blog.getCategoryName()}"></td>
+                                        <td th:if="${blog.getCategoryName()} == '前端'" th:text="${blog.getCategoryName()}"></td>
+                                        <td th:if="${blog.getCategoryName()} == '后端'" th:text="${blog.getCategoryName()}"></td>
+                                        <td th:text="${#strings.abbreviate(blog.getContent(), 100)}">备注</td>
+                                        <td>1</td>
+                                        <td>1</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <!-- 分页 -->
+                            <nav aria-label="Page navigation example" class="mt-4">
+                                <ul class="pagination justify-content-center pagination-sm">
+                                    <li th:class="${blogs.getPageInfo().isHasPreviousPage()==true?'page-item':'page-item disabled'}">
+                                        <a class="page-link" th:href="@{'/admin/articles/'+${blogs.getPageInfo().pageNum -1}+'/10'}" tabindex=""><&nbsp;</a>
+                                    </li>
+                                    <li class="page-item" th:if="${blogs.getPageInfo().isHasPreviousPage()}">
+                                        <a class="page-link" th:href="@{'/admin/articles/'+${blogs.getPageInfo().pageNum -1}+'/10'}" th:text="${blogs.getPageInfo().pageNum -1}"></a>
+                                    </li>
+                                    <li class="page-item active">
+                                        <a class="page-link" th:href="@{'/admin/articles/'+${blogs.getPageInfo().pageNum}+'/10'}" th:text="${blogs.getPageInfo().pageNum}"></a>
+                                    </li>
+                                    <li class="page-item" th:if="${blogs.getPageInfo().isHasNextPage()}">
+                                        <a class="page-link" th:href="@{'/admin/articles/'+${blogs.getPageInfo().pageNum +1}+'/10'}" th:text="${blogs.getPageInfo().pageNum +1}"></a>
+                                    </li>
+                                    <li th:class="${blogs.getPageInfo().isHasNextPage()==true?'page-item':'page-item disabled'}">
+                                        <a class="page-link"  th:href="@{'/admin/articles/'+${blogs.getPageInfo().pageNum +1}+'/10'}" >&nbsp;></a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- #END# Basic Examples -->
+    </div>
+</section>
+
+<script th:src="@{/plugins/jquery/jquery.min.js}"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.js}"></script>
+<script th:src="@{/plugins/bootstrap-select/js/bootstrap-select.js}"></script>
+<script th:src="@{/plugins/jquery-slimscroll/jquery.slimscroll.js}"></script>
+<script th:src="@{/plugins/node-waves/waves.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/jquery.dataTables.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/extensions/export/dataTables.buttons.min.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/extensions/export/buttons.flash.min.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/extensions/export/jszip.min.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/extensions/export/pdfmake.min.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/extensions/export/vfs_fonts.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/extensions/export/buttons.html5.min.js}"></script>
+<script th:src="@{/plugins/jquery-datatable/extensions/export/buttons.print.min.js}"></script>
+<script th:src="@{/js/admin.js}"></script>
+<script th:src="@{/js/pages/tables/jquery-datatable.js}"></script>
+</body>
+
+</html>
